@@ -41,7 +41,9 @@ RUN cd /tmp/nginx && ./configure \
 # correct root
 RUN mv /usr/local/nginx/html /var/www && \
     chown -R www-data:www-data /var/www && \
-    sed -i 's/root\s*html;.*$/root \/var\/www;/' /etc/nginx/nginx.conf
+    mkdir -p /etc/nginx/conf.d && \
+    sed -i 's/root\s*html;.*$/root \/var\/www;/' /etc/nginx/nginx.conf && \
+    echo "\ninclude /etc/nginx/conf.d/\*.conf;" >> /etc/nginx/nginx.conf
 
 # Forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
